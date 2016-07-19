@@ -1,0 +1,311 @@
+@charset "UTF-8";
+
+/*
+ * 居中
+ * -------------------------
+ */
+@mixin mgCenter($top:0,$bottom:0) {
+	@if $bottom!=$top {
+		margin : $top auto $bottom
+	} @else {
+		margin : $top auto
+	}
+}
+%mgCenter {
+    @include mgCenter;
+}
+
+
+/*
+ * 清楚浮动
+ * -------------------------
+ */
+@mixin cf {
+	@if $lte8 {
+		*zoom: 1;
+	}
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+		overflow: hidden;
+	}
+	&:after {
+		clear: both;
+		display: block;
+		height: 0;
+		visibility: hidden;
+	}
+}
+
+%cf {
+	@include cf;
+}
+
+/*
+ * 居中
+ * -------------------------
+ */
+@mixin mid($inFontSize : 12px){
+	font-size: 0;
+
+	& *:first-child{
+		display:inline-block;
+		vertical-align:middle;
+		font-size: $inFontSize;
+	}
+	&:after{
+		content: '';
+		display: inline-block;
+		vertical-align:middle; 
+		height:100%;
+	}
+}
+
+%mid{
+	@include mid;
+}
+
+%midCss3{
+	position: relative;
+	top: 50%;
+	left: 50%;
+	@include transform(translateY(-50%));
+}
+
+// flex 居中
+@mixin flex-center($direction: both) {
+    @include flexbox;
+    @if $direction == both {
+        @include justify-content(center);
+        @include align-items(center);
+    }
+    @else if $direction == x {
+        @include justify-content(center);
+    }
+    @else if $direction == y {
+        @include align-items(center);
+    }
+}
+
+
+
+/*
+ * 圆
+ * -------------------------
+ */
+@mixin radius($length: 50%, $bg: true) {
+	border-radius: $length;
+	@if $bg{
+		background-clip: padding-box;
+	}
+}
+
+
+/*
+ * 透明
+ * -------------------------
+ */
+// 普通透明，ps:连内容也透明
+@mixin opacity($opacity:50) {
+	opacity: $opacity / 100;
+	@if $lte8{
+		filter: alpha(opacity=$opacity);
+		-ms-filter: alpha(opacity=$opacity);
+	}
+}
+
+// css3透明，ps: 内容不会透明，ie下点击不了透明层，直接点到下面一层
+@mixin rgba($color, $alpha){
+	$c: rgba($color, $alpha);
+	$ie_c: ie_hex_str($c);
+	background: rgba($color, 1);
+	@if $lte8{
+		background: transparent\9;
+		zoom: 1;
+		filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#{$ie_c}', endColorstr='#{$ie_c}');
+	}
+	:root & {
+		@if $lte8 {
+			filter:none;
+		}
+		background: $c;
+	}
+}
+
+/*
+ * font字体
+ * -------------------------
+ */
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal ) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    src: url('#{$file-path}.eot'); 											// 1 ie9
+    src: url('#{$file-path}.eot?#iefix')               format('eot'),	 	// 2 ie6-8
+         url('#{$file-path}.svg##{$font-family}')      format('svg'),		// 3
+         url('#{$file-path}.woff')                     format('woff'), 		// 4 
+         url('#{$file-path}.ttf')                      format('truetype'); 	// 5 Safari, Android, iOS
+    }
+}
+
+
+/*
+ * 三角
+ * -------------------------
+ */
+%triangle-basic{
+	content:"";
+	height: 0;
+	width: 0;
+	line-height: 0px;
+}
+@mixin triangle($direction, $size, $size2, $borderColor ) {
+	@extend %triangle-basic;
+	@if $direction == top {
+		border-width: 0 $size2 $size $size2;
+		border-color: transparent transparent $borderColor transparent;
+		border-style: dashed dashed solid dashed;
+	}
+	@else if $direction == left {
+		border-width: $size $size $size 0;
+		border-color: transparent $borderColor transparent transparent;
+		border-style: dashed solid dashed dashed;
+	} 
+
+	@else if $direction == bottom {
+		border-width: $size $size2 0 $size2;
+		border-color: $borderColor transparent transparent transparent;
+		border-style: solid dashed dashed dashed;
+	}
+	@else if $direction == right {
+		border-width: $size2 0 $size2 $size;
+		border-color: transparent transparent transparent $borderColor;
+		border-style: dashed dashed dashed solid;
+	}
+}
+
+/*
+ * 超过加点点
+ * -------------------------
+ */
+// 块状元素
+%ellipsis{
+	overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...)  */
+	white-space: nowrap; /* 不换行 */
+}
+
+// table元素，，用在table上
+%ellipsis-table{
+    table-layout:fixed;
+
+	td{
+		word-break: keep-all; /* 不换行 */
+		@extend %ellipsis;
+	}
+}
+
+// 多行，只支持webkit内核
+@mixin ellipsic($line: 2){
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/*
+ * 变灰
+ * -------------------------
+ */
+@mixin gay($hover: false){
+	// 是否hover后变回彩色 ，默认是false
+	filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+	filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+	-webkit-filter: grayscale(100%);
+
+	@if $hover{
+		&:hover{
+			filter: grayscale(0);
+			-moz-filter: grayscale(0);
+			-ms-filter: grayscale(0);
+			filter: url("data:image/svg+xml;utf8");
+			filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=0);
+			-webkit-filter: grayscale(0);
+		}
+	}
+}
+
+/*
+ * background-size: cover;
+ * ie下，图片路径是相对于html文件，而不是css文件，所以要用绝对路径
+ * -------------------------
+ */
+@mixin bgCover($imgUrl){
+	background-image: url($imgUrl);
+	background-repeat: no-repeat;
+	background-size: cover;
+	@if $lte8 {
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='#{$imgUrl}', sizingMethod='scale');
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='#{$imgUrl}', sizingMethod='scale')";
+	}
+}
+
+@mixin bgCoverImg{
+	width: 100%;
+	height: auto;
+
+	min-height: 100%;
+	min-width: 1024px;
+	
+  	/* Set up positioning */
+ 	position: fixed;
+ 	top: 0;
+ 	left: 0;
+
+ 	@media screen and (max-width: 1024px) {
+ 		left: 50%;
+ 		margin-left: -512px;
+ 	}
+}
+
+/*
+ * transform: translate3d(X, Y, Z)
+ * -------------------------
+ */
+@mixin t3d($x: 0, $y: 0, $z: 0){
+	@include transform(translate3d($x, $y, $z));
+}
+
+
+/*
+ * px转em
+ * -------------------------
+ */
+@function em($px: 16, $base: 16) {
+    @return $px / $base * 1em;
+}
+
+/*
+ * 根号，开方
+ * -------------------------
+ */
+@function sqrt($n, $a: $n/2, $e: .001) {
+	@if $n - $a*$a > $e or $a*$a - $n > $e {
+		@return sqrt($n, ($a + $n/$a)/2, $e);
+	}
+	@else { @return $a; }
+}
+
+/*
+ * 100%
+ * -------------------------
+ */
+@function bai($w: 640, $mw: 640) {
+    @return $w / $mw * 100%;
+}

@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+//-----------------------------------------------------	
+// setting
+//-----------------------------------------------------	
+//是否兼容ie6-8
+$lte6: 				false !default;
+$lte7: 				false !default;
+$lte8: 				true !default;
+
+$css3Ie: 			true !default;
+$css3Old: 			true !default;
+//-----------------------------------------------------	
+// 变量
+//-----------------------------------------------------	
+
+// 颜色
+$c-a:				#323232; // 链接颜色
+
+// font字体相关
+$fz: 				14px;    //字体大小
+$lh:        		1.5;  // 行高line-height
+
+$f-base: 			'微软雅黑 Regular', '微软雅黑',  Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;  //主字体
+// $f-base: 			Avenir, \5fae\8f6f\96c5\9ed1, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;  //主字体
+// $f-base: 			"Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;  //主字体
+$f-pre: 			"PT Mono", Menlo, "Courier New", "Microsoft YaHei", monospace;  //pre
+

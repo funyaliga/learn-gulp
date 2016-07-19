@@ -1,0 +1,90 @@
+@charset "UTF-8";
+@import "core/var";
+@import "core/css3";
+@import "core/code";
+@import "core/base";
+html,body{
+	height: 100%;
+}
+body{
+	background: #eee;
+}
+
+
+
+.mask-active {
+    overflow: hidden
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.6);
+    z-index: 1100;
+    opacity: 0
+}
+
+.mask.active {
+    opacity: 1
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1110;
+    display: none;
+    opacity: 0;
+    outline: 0;
+    text-align: center;
+    transform: scale(1.185);
+    transition-property: transform,opacity;
+    backface-visibility: hidden;
+    perspective: 1000px
+}
+
+.modal:focus {
+    outline: 0
+}
+
+.modal.modal-active {
+    opacity: 1;
+    transition-duration: .3s;
+    transform: scale(1);
+    overflow-x: hidden;
+    overflow-y: auto
+}
+
+.modal.modal-out {
+    opacity: 0;
+    z-index: 1109;
+    transition-duration: .3s;
+    transform: scale(.815)
+}
+
+.modal:before {
+    content: "\200B";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle
+}
+
+.modal-dialog {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 20px auto;
+    width: 270px;
+    max-width: 100%;
+    border-radius: 0;
+    background: #f8f8f8
+}
+

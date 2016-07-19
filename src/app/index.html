@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+@@include('head.inc',{ "title": "首页"})
+<body>
+@@include('header.inc')
+<button
+	href="#doc-modal-1"
+	type="button"
+	class="am-btn am-btn-primary"
+	data-modal="{ width: 400, height: 225}"
+	style="position:relative; z-index:1510"	
+>
+	Modal
+</button>
+
+<div class="modal" id="doc-modal-1">
+	<div class="modal-dialog">
+	<div class="modal-hd">
+		Modal 标题
+	  	<a href="javascript: void(0)" class="close close-spin" data-modal-close>&times;</a>
+	</div>
+	<div class="modal-bd">
+	  Modal 内容。本 Modal 无法通过遮罩层关闭。
+	  <button class="modal-btn" data-modal-confirm>确定</button>
+	</div>
+	</div>
+</div>
+<script>
+$('#doc-modal-1').on('confirm.modal', function(){
+  console.log('确定');
+});
+</script>
+@@include('footer.inc')
+</body>
+</html>

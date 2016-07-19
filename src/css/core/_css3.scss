@@ -1,0 +1,114 @@
+
+@mixin prefixer ($name, $value, $prefixes: false) {
+    @if $prefixes {
+        @each $prefix in $prefixes {
+            @if $prefix == webkit {
+                -webkit-#{$name}: $value;
+            }
+            @else if $prefix == moz {
+                -moz-#{$name}: $value;
+            }
+            @else if $prefix == ms {
+                -ms-#{$name}: $value;
+            }
+        }
+    }
+    #{$name}: $value;
+}
+
+// transition
+@mixin transition($val...) {
+    @if length($val) < 1 {
+         $val: all 0.3s ease-out;
+    }
+    @include prefixer(transition, $val, webkit moz);
+}
+@mixin transition-delay($val...) {
+    @if length($val) < 1 {
+         $val: all 0.3s ease-out;
+    }
+    @include prefixer(transition-delay, $val, webkit moz);
+}
+
+
+@mixin transform($val...) {
+    @include prefixer(transform, $val, webkit moz);
+}
+@mixin transform-origin($val...) {
+    @include prefixer(transform-origin, $val, webkit moz);
+}
+
+
+@mixin animation($val...) {
+    @include prefixer(animation, $val, webkit moz);
+}
+@mixin background-image($val...) {
+    @include prefixer(background-image, $val, webkit moz);
+}
+
+
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes $animation-name {
+        @content;
+    }
+    @-moz-keyframes $animation-name {
+        @content;
+    }  
+    @-ms-keyframes $animation-name {
+        @content;
+    }
+    @keyframes $animation-name {
+        @content;
+    }
+}
+
+
+
+// box-shadow
+@mixin box-shadow($shadow...) {
+    @if length($shadow) < 1 {
+        $shadow:0 0 4px rgba(0,0,0,.3);
+    }
+    @include prefixer(box-shadow, $shadow, webkit moz);
+}
+@mixin text-shadow($val...) {
+    @include prefixer(text-shadow, $val, webkit moz);
+}
+
+
+@mixin flexbox() {
+    @if $css3Old {
+        display: -webkit-box;
+        display: -moz-box;
+    }
+    @if $css3Ie {
+        display: -ms-flexbox;
+        display: -ms-flex;
+    }
+    @include prefixer(display, flex, webkit moz);
+}
+@mixin flex($val){
+    display: block;
+    @if $css3Old {
+        -webkit-box-flex: $val;
+        -moz-box-flex: $val;
+    }
+    @if $css3Ie {
+        -ms-flex: $val;
+    }
+    @include prefixer(flex, $val, webkit moz);
+}
+@mixin justify-content($val:center){
+    @if $css3Old {
+        -webkit-box-pack: $val; 
+    }
+    @include prefixer(justify-content, $val, webkit moz);
+}
+@mixin align-items($val:center){
+    @if $css3Old {
+        -webkit-box-align: $val; 
+    }
+    @include prefixer(align-items, $val, webkit moz);
+}
+
+
